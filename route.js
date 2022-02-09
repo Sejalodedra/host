@@ -56,18 +56,17 @@ router.patch('/items/:id',async (req,res)=>{
 
 //delete api
 router.delete("/items/:id",async(req,res)=>{
-    const re = await item.deleteOne({_id:req.params.id});
-    if(re.deleteCount==1)
-    {
-        res.status(200).jason({
-            "msg":"Deleted"
-        })
-    }
-    else
-    {
-        res.status(200).jason({
-            "msg":"Not Deleted"
-        })
-    }
+    const re = await item.deleteOne({_id:req.params.id},(err,msg)=>{
+        if(err){
+            res.status(500).json({
+                error:err
+            })
+        }
+        else{
+            res.status(200).json({
+                "msg":msg
+            })
+        }
+    })
 })
 module.exports = router 
